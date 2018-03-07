@@ -2,13 +2,14 @@ from os import path
 
 from setuptools import setup, find_packages
 
-from augurycli import __version__
+version = None
+exec(open('augurycli/version.py').read())
 
 with open(path.join(path.abspath(path.dirname(__file__)), 'README.rst')) as f:
     long_description = f.read()
 
 setup(name='augurycli',
-      version=__version__,
+      version=version,
       description='CLI utility for running and retrieving results from Augury',
       long_description=long_description,
       author='Jared Lewis',
