@@ -22,6 +22,7 @@ def logger_cli(augury, args):
                     'message': line
                 }, s)
                 s.write('\n')
+                s.flush() # flush output to file/stdout so that filebeat can pick it up
     for s in streams:
         s.close()
 
