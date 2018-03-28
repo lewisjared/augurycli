@@ -2,6 +2,7 @@ import argparse
 
 from augurycli import from_env
 from augurycli.runner import runner_cli, create_parser as create_runner_parser
+from augurycli.logger import logger_cli, create_parser as create_logger_parser
 
 
 
@@ -12,6 +13,8 @@ def run_command(args):
         augury.token = args.token
     if args.cmd == 'runner':
         runner_cli(augury, args)
+    elif args.cmd == 'logger':
+        logger_cli(augury, args)
 
 
 def main():
@@ -21,6 +24,7 @@ def main():
     subparsers.required = True
 
     create_runner_parser(subparsers)
+    create_logger_parser(subparsers)
 
     args = parser.parse_args()
     run_command(args)
