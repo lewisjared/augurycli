@@ -1,13 +1,13 @@
 import json
 from sys import stdin, stdout
-
+from datetime import datetime
 
 def logger_cli(augury, args):
     assert args.cmd == 'logger'
 
-    output_file = stdout
+    streams = [stdout]
     if args.output:
-        output_file = open(args.output, 'w')
+        streams.append(open(args.output, 'w'))
 
     section = None
     for line in stdin:
@@ -15,12 +15,15 @@ def logger_cli(augury, args):
         if line.startswith('>>>'):
             section = line[3:]
         else:
-            json.dump({
-                'section': section or "",
-                'message': line
-            }, output_file)
-            output_file.write('\n')
-    output_file.close()
+            for s in streams:
+                json.dump({
+                    'section': section or "",
+                    'logged_at': datetime.now().isoformat(),
+                    'message': line
+                }, s)
+                s.write('\n')
+    for s in streams:
+        s.close()
 
 
 def create_parser(parser):
