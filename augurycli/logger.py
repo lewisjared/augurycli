@@ -92,6 +92,7 @@ def logger_cli(augury, args):
     if len(queued_logs):
         send_logs(augury, queued_logs, out_fh)
 
+
 def create_parser(parser):
     runner = parser.add_parser('logger')
     runner.add_argument('-i', '--input', help='Log file to readin', default=stdin)
