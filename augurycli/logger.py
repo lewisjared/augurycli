@@ -47,7 +47,7 @@ def process_line(section, line):
 def send_logs(augury, logs, out_stream):
     try:
         augury.add_logs(logs)
-        logs.clear()
+        del logs[:]
         return time()
     except HTTPError as e:
         out_stream.write('Error sending logs: status {}: {}'.format(e.response.status_code, e.response.content))
