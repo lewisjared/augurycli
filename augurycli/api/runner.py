@@ -7,6 +7,12 @@ class RunnerMixin(object):
             'artifacts': data
         }))
 
+    def add_logs(self, logs):
+        url = self._url('/runner/log')
+        return self._result(self.post(url, json={
+            'logs': logs
+        }))
+
     def fetch_config(self):
         url = self._url('/runner/config')
         return self._result(self.get(url))
