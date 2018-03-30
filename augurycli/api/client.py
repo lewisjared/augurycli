@@ -1,6 +1,8 @@
 import requests
 import six
 from six.moves.urllib.parse import urljoin
+from urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
 
 from augurycli.util import kwargs_from_env
 from .constants import DEFAULT_TIMEOUT_SECONDS, DEFAULT_BASE_URL
@@ -14,6 +16,13 @@ class APIClient(requests.Session,
         self.base_url = base_url
         self.timeout = timeout
         self.token = token
+
+        retries = Retry(total=5,
+                        backoff_factor=0.1,
+                        status_forcelist=[500, 502, 503, 504])
+
+        self.mount('http://', HTTPAdapter(max_retries=retries))
+        self.mount('https://', HTTPAdapter(max_retries=retries))
 
     def get(self, url, **kwargs):
         return super(APIClient, self).get(url, **self._update_kwargs(**kwargs))
